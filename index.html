@@ -6768,7 +6768,7 @@
       }
 
       function readyCard(b) {
-        var links = shareLinks(b.shareText || ("كتيّب إنجليزية للسنة الثالثة ابتدائي: " + b.title + " — وفق المنهاج الجزائري وكتاب My Book of English، مع تمارين ومفتاح إجابات، والسعر 400 دج. العيّنة مجانية في متجر الكتيّبات التعليمية."));
+        var links = shareLinks(b.shareText || ("كتيّب إنجليزية للسنة الثالثة ابتدائي: " + b.title + " — وفق المنهاج الجزائري وكتاب My Book of English، مع تمارين ومفتاح إجابات، والسعر " + b.price + " دج. العيّنة مجانية في متجر الكتيّبات التعليمية."));
         var el = document.createElement("article");
         el.className = "card";
         el.innerHTML =
@@ -6842,7 +6842,7 @@
           + '@media print{body{margin:10mm;}}'
           + '</style></head><body>'
           + '<h1>' + b.sampleTitle + '</h1>'
-          + '<p>' + (b.sampleIntro || "هذه عيّنة مجانية من الكتيّب الكامل. الكتيّب الكامل يضمّ جميع الدروس مع تمارين شاملة ومفتاح إجابات كامل — سعره 400 دج، ويُطلب من متجر الكتيّبات التعليمية للابتدائي.") + '</p>'
+          + '<p>' + (b.sampleIntro || "هذه عيّنة مجانية من الكتيّب الكامل. الكتيّب الكامل يضمّ جميع الدروس مع تمارين شاملة ومفتاح إجابات كامل — سعره " + b.price + " دج، ويُطلب من متجر الكتيّبات التعليمية للابتدائي.") + '</p>'
           + pagesHtml
           + '</body></html>';
         var blob = new Blob([doc], { type: "text/html;charset=utf-8" });
@@ -6866,7 +6866,8 @@
         currentBooklet = b;
         lastFocus = document.activeElement;
         modalTitle.textContent = b.title;
-        modalSub.textContent = b.modalSub || (b.subject + " — " + YEAR_NAMES[b.year] + " ابتدائي • وفق كتاب My Book of English • عيّنة من صفحات الكتيّب الكامل (400 دج)");
+        document.getElementById("modalOrder").textContent = "اطلب الكتيّب الكامل — " + b.price + " دج";
+        modalSub.textContent = b.modalSub || (b.subject + " — " + YEAR_NAMES[b.year] + " ابتدائي • وفق كتاب My Book of English • عيّنة من صفحات الكتيّب الكامل (" + b.price + " دج)");
         modalPages.style.setProperty("--cov", COVER_COLORS[b.coverClass] || "#0b6b4f");
         modalPages.innerHTML = b.pages.map(function (p) {
           return '<div class="sample-page"><p class="pg-label">' + p.label + '</p><h4>' + p.title + '</h4>' + p.html + '</div>';
