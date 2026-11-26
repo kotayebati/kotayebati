@@ -663,6 +663,16 @@
       }
       .mt-save .mt-keep { color: var(--muted); font-size: 14px; }
       .mt-active { color: var(--ok); font-weight: 700; font-size: 14.5px; }
+
+      /* ---------- Kindergarten / coloring-book standalone section ---------- */
+      #kindergarten { background: linear-gradient(135deg, #fff1f6 0%, #fdf6e3 45%, #eef7ff 100%); }
+      #kindergarten .sec-head h2 { color: #c2437e; }
+      .coloring-card { max-width: 880px; margin: 0 auto; border: 3px solid transparent; border-radius: 20px; background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(90deg, #f43f5e, #f59e0b, #22c55e, #3b82f6, #a855f7) border-box; box-shadow: 0 14px 34px rgba(194, 67, 126, .22); overflow: hidden; }
+      @media (min-width: 760px) {
+        .coloring-card { display: flex; }
+        .coloring-card .cover { flex: 0 0 300px; }
+        .coloring-card .card-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+      }
     </style>
   </head>
   <body>
@@ -766,12 +776,23 @@
         </div>
       </section>
 
+      <!-- Kindergarten & foundations (standalone, not part of the school catalog) -->
+      <section id="kindergarten">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>قسم الروضة والتأسيس</h2>
+            <p>للأطفال من 3 إلى 6 سنوات — قبل المدرسة الابتدائية. قسم مستقل عن الكتيّبات المدرسية، صُمّم للتلوين واللعب وتعلّم الألوان في البيت.</p>
+          </div>
+          <div id="coloringCardSlot"></div>
+        </div>
+      </section>
+
       <!-- Catalog -->
       <section id="catalog">
         <div class="wrap">
           <div class="sec-head">
             <h2>متجر الكتيّبات</h2>
-            <p>اختر السنة الدراسية والمادة والفصل. كل الكتيّبات جاهزة الآن وعليها علامة «جاهز» — 233 كتيّبًا يغطّي كل مواد السنوات الخمس وفق المنهاج.</p>
+            <p>اختر السنة الدراسية والمادة والفصل. كل الكتيّبات جاهزة الآن وعليها علامة «جاهز» — 232 كتيّبًا مدرسيًا يغطّي كل مواد السنوات الخمس وفق المنهاج.</p>
           </div>
 
           <div class="filters" role="search">
@@ -1210,7 +1231,7 @@
     </footer>
 
     <div class="sticky-bar" aria-hidden="false">
-      <p class="txt">233 كتيّبًا جاهزًا من السنة الأولى إلى الخامسة — <b>400 دج</b> للكتيّب الواحد</p>
+      <p class="txt">232 كتيّبًا مدرسيًا جاهزًا من السنة الأولى إلى الخامسة — <b>400 دج</b> للكتيّب الواحد</p>
       <a class="btn btn-primary btn-sm" href="#order">اطلب الآن</a>
     </div>
 
@@ -6813,6 +6834,7 @@
         var shown = 0;
         var readyShown = 0;
         CATALOG.forEach(function (item) {
+          if (item.type === "ready" && item.data.id === "coloring-1") return; // coloring book: shown only in its own kindergarten section
           if (!matches(item)) return;
           grid.appendChild(item.type === "ready" ? readyCard(item.data) : soonCard(item));
           shown++;
@@ -6821,6 +6843,17 @@
         emptyState.hidden = shown !== 0;
         resultsCount.textContent = shown === 0 ? "" : ("يظهر الآن " + shown + (shown === 1 ? " كتيّب" : " كتيّبًا") + (readyShown > 0 ? " — منها " + readyShown + " جاهزة للتحميل والطباعة." : "."));
       }
+
+      /* ---------- Coloring book: standalone kindergarten section card ---------- */
+      (function () {
+        var slot = document.getElementById("coloringCardSlot");
+        var book = READY.filter(function (x) { return x.id === "coloring-1"; })[0];
+        if (slot && book) {
+          var card = readyCard(book);
+          card.classList.add("coloring-card");
+          slot.appendChild(card);
+        }
+      })();
 
       var COVER_COLORS = { "cov-teal": "#0b6b4f", "cov-amber": "#c47b12", "cov-blue": "#1f6f8b", "cov-green": "#2e7d32", "cov-violet": "#6a4fa3", "cov-purple": "#7d3c98", "cov-brown": "#8a5a2b", "cov-rose": "#c2437e", "cov-sky": "#2f7fc4", "cov-slate": "#5d6f66" };
 
